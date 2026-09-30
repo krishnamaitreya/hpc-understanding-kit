@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Check free GPUs · HPC Understanding Kit</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.png" type="image/png" sizes="32x32">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">HPC Kit</a><span>›</span><a href="index.html">Find free GPUs</a><span>›</span><span>Check which are free</span></nav>
+  <header>
+    <p class="eyebrow">Find free GPUs · 2 of 3</p>
+    <h1>Check which GPUs are free</h1>
+  </header>
+  <p class="lead">Run these on the HPC after you log in. <code>sinfo</code> shows how busy each partition is. <code>gpufree</code> counts the free GPUs.</p>
+
+  <div class="card">
+    <h2>1 · sinfo: how busy is each partition?</h2>
+    <div class="codebox"><pre>sinfo -p gpu_rtx_pro_6000_6_csis_hyd,gpu_h200_8,gpu_h100_4,gpu_a100_8,gpu_v100_2</pre></div>
+    <div class="term"><div class="bar">HPC · example</div><pre>PARTITION                   AVAIL  TIMELIMIT  NODES  STATE NODELIST
+gpu_v100_2                     up 3-00:00:00      2    mix gpunode[2-3]
+gpu_a100_8                     up 5-00:00:00      1    mix gpunode4
+gpu_h100_4                     up 3-00:00:00      2    mix gpunode[5-6]
+gpu_h200_8                     up 1-00:00:00      1  alloc gpunode7
+gpu_rtx_pro_6000_6_csis_hyd    up 2-00:00:00      1    mix gpunode8</pre></div>
+    <table>
+      <thead><tr><th>STATE</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><code>idle</code></td><td>All GPUs free</td></tr>
+        <tr><td><code>mix</code></td><td>Partly used. Some GPUs may be free: check with <code>gpufree</code></td></tr>
+        <tr><td><code>alloc</code></td><td>Full. Your job will wait in the queue</td></tr>
+        <tr><td><code>drain</code> / <code>down</code></td><td>Out of service</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:14px;color:var(--muted)">A <code>-</code> after the state (e.g. <code>mix-</code>) means Slurm is holding that node for a waiting job.</p>
+  </div>
+
+  <div class="card">
+    <h2>2 · gpufree: how many GPUs are free?</h2>
+    <p><b>One-time setup.</b> Paste this once on the HPC. It adds a <code>gpufree</code> command to your account.</p>
+    <div class="codebox"><pre>cat &gt;&gt; ~/.bashrc &lt;&lt;'EOF'
+gpufree(){ sinfo -h -N -o "%N %P %t" | grep ^gpunode | while read n p s; do t=$(scontrol show node $n); tot=$(grep -oP 'CfgTRES=\S*?gres/gpu=\K[0-9]+' &lt;&lt;&lt;"$t"); use=$(grep -oP 'AllocTRES=\S*?gres/gpu=\K[0-9]+' &lt;&lt;&lt;"$t"); printf "%-9s %-28s %-6s free %s of %s\n" $n $p $s $((tot-${use:-0})) $tot; done; }
+EOF
+source ~/.bashrc</pre></div>
+    <p><b>Then, any time:</b></p>
+    <div class="codebox"><pre>gpufree</pre></div>
+    <div class="term"><div class="bar">HPC · real output, 30 Sep 2026</div><pre><span class="p">[&lt;username&gt;@hpc01 ~]$</span> <span class="c">gpufree</span>
+gpunode1  gpu_v100_1                   mix-   free 0 of 1
+gpunode2  gpu_v100_2                   mix-   free 1 of 2
+gpunode3  gpu_v100_2                   mix    free 1 of 2
+gpunode4  gpu_a100_8                   mix    <span class="g">free 1 of 8</span>
+gpunode5  gpu_h100_4                   mix-   free 0 of 4
+gpunode6  gpu_h100_4                   mix    <span class="g">free 1 of 4</span>
+gpunode7  gpu_h200_8                   mix-   free 0 of 8
+gpunode8  gpu_rtx_pro_6000_6_csis_hyd  mix-   <span class="g">free 1 of 6</span></pre></div>
+    <p style="font-size:14px;color:var(--muted)">A free GPU is not a promise. Someone may take it before your job starts. If none is free, submit anyway and your job waits in the queue. <code>gpunode1</code> is reserved for Schrödinger software users.</p>
+  </div>
+
+  <div class="pager"><a href="gpus.html">← GPUs on Sharanga</a><a href="csis.html">The CSIS node →</a></div>
+  <footer class="site"><span>Made by CSIS research scholars, BITS Pilani Hyderabad, for a better understanding of Sharanga.</span><a href="https://sharanga.hpc.bits-hyderabad.ac.in/docs/faq/" target="_blank" rel="noopener">Official Sharanga documentation</a><a href="../privacy.html">Privacy</a></footer>
+</div>
+<script src="../assets/kit.js"></script>
+</body>
+</html>

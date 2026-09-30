@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Create SSH key · HPC Understanding Kit</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.png" type="image/png" sizes="32x32">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">HPC Kit</a><span>›</span><a href="index.html">Access for HPC</a><span>›</span><span>Create SSH key</span></nav>
+  <header>
+    <p class="eyebrow">Access · 3 of 3 · For everyone</p>
+    <h1>Create your SSH public key</h1>
+  </header>
+  <p class="lead">One command makes two files. You keep the <b>private key</b>. You send the <b>public key</b> (the one ending in <code>.pub</code>). Pick your system.</p>
+
+  <div class="tabs" data-tabs="os" role="tablist" aria-label="Your system">
+    <button type="button" role="tab" data-tab="win">Windows</button>
+    <button type="button" role="tab" data-tab="mac">macOS</button>
+    <button type="button" role="tab" data-tab="linux">Linux</button>
+  </div>
+
+  <div data-tabset="os">
+    <!-- Windows -->
+    <div class="card" data-panel="win">
+      <h2>Windows 10 / 11</h2>
+      <ol class="do">
+        <li>Press <b>Windows key + R</b>, type <code>cmd</code>, press <b>Enter</b>.</li>
+        <li>Run the command below. Press <b>Enter</b> at every question to accept the default.</li>
+        <li>Show your public key and attach that file to your email.</li>
+      </ol>
+      <div class="codebox"><pre>ssh-keygen -t ed25519</pre></div>
+      <div class="term"><div class="bar">Command Prompt · example</div><pre><span class="p">C:\Users\you&gt;</span> <span class="c">ssh-keygen -t ed25519</span>
+Generating public/private ed25519 key pair.
+Enter file in which to save the key (C:\Users\you/.ssh/id_ed25519): <span class="d">[Enter]</span>
+Enter passphrase (empty for no passphrase): <span class="d">[Enter, or type one]</span>
+Enter same passphrase again: <span class="d">[Enter]</span>
+<span class="g">Your public key has been saved in C:\Users\you/.ssh/id_ed25519.pub</span>
+<span class="d">(then a key fingerprint and a small random-art picture: that is normal)</span>
+
+<span class="p">C:\Users\you&gt;</span> <span class="c">type %USERPROFILE%\.ssh\id_ed25519.pub</span>
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...kR2x you@laptop</pre></div>
+      <div class="codebox"><pre>type %USERPROFILE%\.ssh\id_ed25519.pub</pre></div>
+      <p><b>File to send:</b> <code>C:\Users\&lt;you&gt;\.ssh\id_ed25519.pub</code></p>
+      <p style="font-size:14px;color:var(--muted)">"ssh-keygen is not recognized"? Open Settings › Apps › Optional features, add <b>OpenSSH Client</b>, then reopen cmd.</p>
+      <p style="font-size:14px;color:var(--muted)">Using PowerShell instead of cmd? Show the key with <code>type $env:USERPROFILE\.ssh\id_ed25519.pub</code>.</p>
+    </div>
+
+    <!-- macOS -->
+    <div class="card" data-panel="mac" hidden>
+      <h2>macOS</h2>
+      <ol class="do">
+        <li>Open <b>Terminal</b> (Finder › Applications › Utilities › Terminal, or Cmd+Space and type "Terminal").</li>
+        <li>Run the command below. Press <b>Enter</b> at every question.</li>
+        <li>Show your public key and attach that file to your email.</li>
+      </ol>
+      <div class="codebox"><pre>ssh-keygen -t ed25519</pre></div>
+      <div class="term"><div class="bar">Terminal · example</div><pre><span class="p">you@mac ~ %</span> <span class="c">ssh-keygen -t ed25519</span>
+Generating public/private ed25519 key pair.
+Enter file in which to save the key (/Users/you/.ssh/id_ed25519): <span class="d">[Enter]</span>
+Enter passphrase (empty for no passphrase): <span class="d">[Enter, or type one]</span>
+Enter same passphrase again: <span class="d">[Enter]</span>
+<span class="g">Your public key has been saved in /Users/you/.ssh/id_ed25519.pub</span>
+<span class="d">(then a key fingerprint and a small random-art picture: that is normal)</span>
+
+<span class="p">you@mac ~ %</span> <span class="c">cat ~/.ssh/id_ed25519.pub</span>
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...kR2x you@mac</pre></div>
+      <div class="codebox"><pre>cat ~/.ssh/id_ed25519.pub</pre></div>
+      <p><b>File to send:</b> <code>~/.ssh/id_ed25519.pub</code>. The <code>.ssh</code> folder is hidden in Finder; press <b>Cmd+Shift+.</b> to show it, or run <code>open ~/.ssh</code>.</p>
+    </div>
+
+    <!-- Linux -->
+    <div class="card" data-panel="linux" hidden>
+      <h2>Linux</h2>
+      <ol class="do">
+        <li>Open a terminal (Ctrl+Alt+T on Ubuntu).</li>
+        <li>Run the command below. Press <b>Enter</b> at every question.</li>
+        <li>Show your public key and attach that file to your email.</li>
+      </ol>
+      <div class="codebox"><pre>ssh-keygen -t ed25519</pre></div>
+      <div class="term"><div class="bar">Terminal · example</div><pre><span class="p">you@laptop:~$</span> <span class="c">ssh-keygen -t ed25519</span>
+Generating public/private ed25519 key pair.
+Enter file in which to save the key (/home/you/.ssh/id_ed25519): <span class="d">[Enter]</span>
+Enter passphrase (empty for no passphrase): <span class="d">[Enter, or type one]</span>
+Enter same passphrase again: <span class="d">[Enter]</span>
+<span class="g">Your public key has been saved in /home/you/.ssh/id_ed25519.pub</span>
+<span class="d">(then a key fingerprint and a small random-art picture: that is normal)</span>
+
+<span class="p">you@laptop:~$</span> <span class="c">cat ~/.ssh/id_ed25519.pub</span>
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...kR2x you@laptop</pre></div>
+      <div class="codebox"><pre>cat ~/.ssh/id_ed25519.pub</pre></div>
+      <p><b>File to send:</b> <code>~/.ssh/id_ed25519.pub</code></p>
+    </div>
+
+  </div>
+
+  <div class="note ok">If it asks <code>Overwrite (y/n)?</code>, you already have a key. Type <b>n</b> and send your existing <code>id_ed25519.pub</code>.</div>
+
+  <div class="note warn"><b>Never share your private key</b> (the file without <code>.pub</code>). Anyone who has it can log in as you.</div>
+
+  <div class="pager"><a href="student-access.html">← Student access</a><a href="../files/login.html">Next topic: Log in →</a></div>
+  <footer class="site"><span>Made by CSIS research scholars, BITS Pilani Hyderabad, for a better understanding of Sharanga.</span><a href="https://sharanga.hpc.bits-hyderabad.ac.in/docs/faq/" target="_blank" rel="noopener">Official Sharanga documentation</a><a href="../privacy.html">Privacy</a></footer>
+</div>
+<script src="../assets/kit.js"></script>
+</body>
+</html>

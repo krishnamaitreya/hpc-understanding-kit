@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Check your jobs · HPC Understanding Kit</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.png" type="image/png" sizes="32x32">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">HPC Kit</a><span>›</span><a href="index.html">Watch &amp; fix jobs</a><span>›</span><span>Check your jobs</span></nav>
+  <header>
+    <p class="eyebrow">Watch &amp; fix jobs · 1 of 3</p>
+    <h1>Check your jobs</h1>
+  </header>
+  <p class="lead"><code>squeue --me</code> lists every job of your account that is running or waiting. A job disappears from the list when it ends.</p>
+
+  <div class="card">
+    <div class="codebox"><pre>squeue --me</pre></div>
+    <div class="term"><div class="bar">HPC · example</div><pre><span class="p">[&lt;username&gt;@hpc01 ~]$</span> <span class="c">squeue --me</span>
+  JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+ 371755 gpu_a100_   my_job &lt;username&gt;  <span class="g">R</span>   15:19:01      1 gpunode4
+ 372920 gpu_h100_   my_job &lt;username&gt; PD       0:00      1 (Priority)</pre></div>
+    <table>
+      <thead><tr><th>Column</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><code>JOBID</code></td><td>The number <code>sbatch</code> gave you</td></tr>
+        <tr><td><code>ST</code></td><td>State: <b>R</b> = running, <b>PD</b> = pending (waiting), <b>CG</b> = finishing</td></tr>
+        <tr><td><code>TIME</code></td><td>How long it has been running</td></tr>
+        <tr><td><code>NODELIST(REASON)</code></td><td>Running: the node it is on. Waiting: <b>why</b> it is waiting (see <a href="waiting.html">next page</a>)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Other useful commands</h2>
+    <div class="tscroll"><table>
+      <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>squeue --me --start</code></td><td>Slurm's estimate of when a waiting job will start</td></tr>
+        <tr><td><code>tail -f my_job_371755.out</code></td><td>Watch the job's output live (Ctrl+C stops watching)</td></tr>
+        <tr><td><code>scancel 371755</code></td><td>Cancel one job</td></tr>
+        <tr><td><code>scancel --me</code></td><td>Cancel <b>all</b> jobs of your account. Careful: on a shared account this includes other students' jobs.</td></tr>
+        <tr><td><code>scontrol show job 371755</code></td><td>Every detail of a job: resources, node, times, reason</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="note warn">On a shared guide's account, <code>squeue --me</code> also shows the other students' jobs. Check the job name and ID before you cancel anything.</div>
+
+  <div class="pager"><a href="index.html">← Watch &amp; fix jobs</a><a href="waiting.html">Why is my job waiting? →</a></div>
+  <footer class="site"><span>Made by CSIS research scholars, BITS Pilani Hyderabad, for a better understanding of Sharanga.</span><a href="https://sharanga.hpc.bits-hyderabad.ac.in/docs/faq/" target="_blank" rel="noopener">Official Sharanga documentation</a><a href="../privacy.html">Privacy</a></footer>
+</div>
+<script src="../assets/kit.js"></script>
+</body>
+</html>

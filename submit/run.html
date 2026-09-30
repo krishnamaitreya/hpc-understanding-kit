@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Submit and read output · HPC Understanding Kit</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.png" type="image/png" sizes="32x32">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">HPC Kit</a><span>›</span><a href="index.html">Submit a job</a><span>›</span><span>Submit and read the output</span></nav>
+  <header>
+    <p class="eyebrow">Submit a job · 2 of 2</p>
+    <h1>Submit it and read the output</h1>
+  </header>
+  <p class="lead">Log in, go to your project folder, save the script, and run <code>sbatch</code>.</p>
+
+  <div class="card">
+    <h2>1 · Save the script on the HPC</h2>
+    <div class="codebox"><pre>cd /scratch/$USER/myproject
+nano job.sh</pre></div>
+    <p>Paste the script from the previous page. Press <b>Ctrl+O</b>, then <b>Enter</b> to save, then <b>Ctrl+X</b> to exit.</p>
+    <p style="font-size:14px;color:var(--muted)">Or write <code>job.sh</code> on your laptop and upload it with <code>put job.sh</code> in sftp.</p>
+  </div>
+
+  <div class="card">
+    <h2>2 · Submit</h2>
+    <div class="codebox"><pre>sbatch job.sh</pre></div>
+    <div class="term"><div class="bar">HPC · example</div><pre><span class="p">[&lt;username&gt;@hpc01 myproject]$</span> <span class="c">sbatch job.sh</span>
+<span class="g">Submitted batch job 482913</span></pre></div>
+    <p>The number is your <b>job ID</b>. You need it to check or cancel the job.</p>
+  </div>
+
+  <div class="card">
+    <h2>3 · Read the output</h2>
+    <p>Slurm writes two files in the same folder as <code>job.sh</code>, named after your job name and job ID:</p>
+    <table>
+      <thead><tr><th>File</th><th>Contains</th><th>Read it with</th></tr></thead>
+      <tbody>
+        <tr><td><code>my_job_482913.out</code></td><td>Everything your program prints: progress, losses, results</td><td><code>tail -f my_job_482913.out</code></td></tr>
+        <tr><td><code>my_job_482913.err</code></td><td>Errors, Python tracebacks and warnings</td><td><code>cat my_job_482913.err</code></td></tr>
+      </tbody>
+    </table>
+    <div class="term"><div class="bar">HPC · example</div><pre><span class="p">[&lt;username&gt;@hpc01 myproject]$</span> <span class="c">tail -f my_job_482913.out</span>
+Epoch 1/100  loss 1.182  val_acc 0.412
+Epoch 2/100  loss 1.104  val_acc 0.448
+<span class="d"># new lines appear as the job runs. Ctrl+C stops watching; the job keeps running.</span></pre></div>
+    <p><b>Job ended quickly?</b> Open the <code>.err</code> file first. The reason is almost always there.</p>
+  </div>
+
+  <div class="pager"><a href="build.html">← Build your job script</a><a href="../watch/index.html">Next topic: Watch &amp; fix jobs →</a></div>
+  <footer class="site"><span>Made by CSIS research scholars, BITS Pilani Hyderabad, for a better understanding of Sharanga.</span><a href="https://sharanga.hpc.bits-hyderabad.ac.in/docs/faq/" target="_blank" rel="noopener">Official Sharanga documentation</a><a href="../privacy.html">Privacy</a></footer>
+</div>
+<script src="../assets/kit.js"></script>
+</body>
+</html>

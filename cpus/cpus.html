@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CPU nodes on Sharanga · HPC Understanding Kit</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.png" type="image/png" sizes="32x32">
+<link rel="stylesheet" href="../assets/style.css">
+<style>td.n{font-variant-numeric:tabular-nums;white-space:nowrap}</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">HPC Kit</a><span>›</span><a href="index.html">Find free CPU nodes</a><span>›</span><span>CPU nodes on Sharanga</span></nav>
+  <header>
+    <p class="eyebrow">Find free CPU nodes · 1 of 2</p>
+    <h1>CPU nodes on Sharanga</h1>
+  </header>
+  <p class="lead">Each row is a partition. You write its name in your job script. Pick by how many cores your job needs: the two big partitions only accept jobs of <b>128 cores or more</b>.</p>
+
+  <div class="card tscroll">
+    <table>
+      <thead><tr><th>Partition</th><th>Cores per job</th><th>Nodes</th><th>Cores / RAM per node</th><th>Max job time</th><th>You can run at once</th></tr></thead>
+      <tbody>
+        <tr><td><code>compute</code></td><td class="n"><b>4 to 64</b></td><td class="n">22</td><td class="n">64 / 256 GB</td><td class="n">4 days</td><td>7 jobs, 1,024 cores in total</td></tr>
+        <tr><td><code>big_compute</code></td><td class="n"><b>128 or more</b></td><td class="n">19</td><td class="n">192 / 385 GB</td><td class="n">5 days</td><td>8 jobs</td></tr>
+        <tr><td><code>big_compute_amd_9655</code></td><td class="n"><b>128 or more</b></td><td class="n">5</td><td class="n">192 / 385 GB</td><td class="n">5 days</td><td>2 jobs</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Which one should I pick?</h2>
+    <ul style="margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px">
+      <li><b>Fewer than 128 cores</b> (most jobs): <code>compute</code>.</li>
+      <li><b>128 cores or more</b> (large parallel jobs): <code>big_compute</code>.</li>
+      <li><b>128 cores or more, newest CPUs:</b> <code>big_compute_amd_9655</code>, but only 2 jobs at a time and it is often full.</li>
+    </ul>
+  </div>
+
+  <div class="note warn"><b>Always name the partition.</b> A job without one goes to <code>big_compute</code>. If it asks for fewer than 128 cores, it waits forever with the reason <code>QOSMinCpuNotSatisfied</code>.</div>
+
+  <div class="note warn">Limits are per <b>account</b>, shared by everyone using the same guide's account. The partitions <code>big_compute_physics_hyd</code>, <code>big_compute_physics_hyd_comsol</code> and <code>big_compute_suryoday</code> belong to specific groups. Don't use them.</div>
+
+  <p style="font-size:13px;color:var(--muted)">Checked on the cluster on 30 Sep 2026. Limits can change.</p>
+
+  <div class="pager"><a href="index.html">← Find free CPU nodes</a><a href="free.html">Check which are free →</a></div>
+  <footer class="site"><span>Made by CSIS research scholars, BITS Pilani Hyderabad, for a better understanding of Sharanga.</span><a href="https://sharanga.hpc.bits-hyderabad.ac.in/docs/faq/" target="_blank" rel="noopener">Official Sharanga documentation</a><a href="../privacy.html">Privacy</a></footer>
+</div>
+</body>
+</html>

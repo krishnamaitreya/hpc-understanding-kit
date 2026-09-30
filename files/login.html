@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Log in · HPC Understanding Kit</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.png" type="image/png" sizes="32x32">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">HPC Kit</a><span>›</span><a href="index.html">Log in &amp; move files</a><span>›</span><span>Log in</span></nav>
+  <header>
+    <p class="eyebrow">Log in &amp; move files · 1 of 2</p>
+    <h1>Log in</h1>
+  </header>
+  <p class="lead">Open a terminal on your laptop (cmd on Windows, Terminal on macOS and Linux) and run one command. <code>&lt;username&gt;</code> is your guide's Sharanga username.</p>
+
+  <div class="codebox"><pre>ssh &lt;username&gt;@hpc.bits-hyderabad.ac.in</pre></div>
+
+  <div class="card">
+    <h2>The first time only</h2>
+    <p>SSH asks whether you trust the server. Type <b>yes</b> and press Enter.</p>
+    <div class="term"><div class="bar">your laptop · first login</div><pre><span class="p">you@laptop:~$</span> <span class="c">ssh &lt;username&gt;@hpc.bits-hyderabad.ac.in</span>
+The authenticity of host 'hpc.bits-hyderabad.ac.in (125.22.54.219)' can't be established.
+ED25519 key fingerprint is SHA256:jBqh4Eg7Un/yLtgt+8jLN6MF1C/61NBn1I6cbyPXxh0.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? <span class="c">yes</span></pre></div>
+    <p style="font-size:14px;color:var(--muted)">The fingerprint should match <code>SHA256:jBqh4Eg7Un/yLtgt+8jLN6MF1C/61NBn1I6cbyPXxh0</code>. If it doesn't, stop and tell the HPC team.</p>
+  </div>
+
+  <div class="card">
+    <h2>You're in</h2>
+    <div class="term"><div class="bar">Sharanga</div><pre><span class="d">             ____  _
+            / ___|| |__   __ _ _ __ __ _ _ __   __ _  __ _
+            \___ \| '_ \ / _` | '__/ _` | '_ \ / _` |/ _` |
+             ___) | | | | (_| | | | (_| | | | | (_| | (_| |
+            |____/|_| |_|\__,_|_|  \__,_|_| |_|\__, |\__,_|
+                                                |___/</span>
+<span class="p">[&lt;username&gt;@hpc01 ~]$</span> <span class="c">exit</span>
+logout
+Connection to hpc.bits-hyderabad.ac.in closed.</pre></div>
+    <p>You are now on the <b>login node</b>, <code>hpc01</code>. Use it to edit files, upload data and submit jobs. <b>Do not run training here.</b> Training runs on GPU nodes through Slurm (a later topic).</p>
+    <p>Type <code>exit</code> to log out.</p>
+  </div>
+
+  <div class="card">
+    <h2>Sharing your guide's account?</h2>
+    <p>Other students may use the same account. Keep your work in your own folder:</p>
+    <div class="codebox"><pre>mkdir -p /scratch/$USER/&lt;yourname&gt;</pre></div>
+  </div>
+
+  <div class="note warn">Asked for a password? Your key has not been added yet, or you are on a different laptop from the one where you created the key.</div>
+
+  <div class="pager"><a href="index.html">← Log in &amp; move files</a><a href="sftp.html">Upload &amp; download →</a></div>
+  <footer class="site"><span>Made by CSIS research scholars, BITS Pilani Hyderabad, for a better understanding of Sharanga.</span><a href="https://sharanga.hpc.bits-hyderabad.ac.in/docs/faq/" target="_blank" rel="noopener">Official Sharanga documentation</a><a href="../privacy.html">Privacy</a></footer>
+</div>
+<script src="../assets/kit.js"></script>
+</body>
+</html>

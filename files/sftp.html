@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Upload &amp; download · HPC Understanding Kit</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.png" type="image/png" sizes="32x32">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">HPC Kit</a><span>›</span><a href="index.html">Log in &amp; move files</a><span>›</span><span>Upload &amp; download</span></nav>
+  <header>
+    <p class="eyebrow">Log in &amp; move files · 2 of 2</p>
+    <h1>Upload &amp; download with sftp</h1>
+  </header>
+  <p class="lead">Run <code>sftp</code> from a terminal <b>on your laptop</b>, not on the HPC. <code>put</code> sends a file to the HPC. <code>get</code> brings a file back to your laptop.</p>
+
+  <div class="card">
+    <h2>Where to keep files on the HPC</h2>
+    <table>
+      <thead><tr><th>Folder</th><th>Put here</th></tr></thead>
+      <tbody>
+        <tr><td><code>/home/&lt;username&gt;</code></td><td>Code, scripts, conda environments</td></tr>
+        <tr><td><code>/scratch/&lt;username&gt;</code></td><td>Datasets, checkpoints, results: anything large</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Connect</h2>
+    <div class="codebox"><pre>sftp &lt;username&gt;@hpc.bits-hyderabad.ac.in</pre></div>
+    <p>The prompt changes to <code>sftp&gt;</code>. Uploads come from the laptop folder you opened the terminal in.</p>
+  </div>
+
+  <div class="card">
+    <h2>Example</h2>
+    <div class="term"><div class="bar">your laptop · sftp</div><pre><span class="p">you@laptop:~/project$</span> <span class="c">sftp &lt;username&gt;@hpc.bits-hyderabad.ac.in</span>
+Connected to hpc.bits-hyderabad.ac.in.
+<span class="p">sftp&gt;</span> <span class="c">cd /scratch/&lt;username&gt;</span>
+<span class="p">sftp&gt;</span> <span class="c">put dataset.zip</span>
+Uploading dataset.zip to /scratch/&lt;username&gt;/dataset.zip
+dataset.zip                         <span class="g">100%</span> 2150MB  48.3MB/s   00:44
+<span class="p">sftp&gt;</span> <span class="c">put -r code</span>                       <span class="d"># -r = a whole folder</span>
+<span class="p">sftp&gt;</span> <span class="c">get runs/best.pt</span>
+Fetching /scratch/&lt;username&gt;/runs/best.pt to best.pt
+best.pt                             <span class="g">100%</span>   88MB  52.0MB/s   00:01
+<span class="p">sftp&gt;</span> <span class="c">exit</span></pre></div>
+  </div>
+
+  <div class="card">
+    <h2>sftp commands</h2>
+    <div class="tscroll"><table>
+      <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>put file</code></td><td>Upload a file (laptop → HPC)</td></tr>
+        <tr><td><code>put -r folder</code></td><td>Upload a folder</td></tr>
+        <tr><td><code>get file</code></td><td>Download a file (HPC → laptop)</td></tr>
+        <tr><td><code>get -r folder</code></td><td>Download a folder</td></tr>
+        <tr><td><code>ls</code> · <code>cd</code> · <code>pwd</code></td><td>List / change / show folder <b>on the HPC</b></td></tr>
+        <tr><td><code>lls</code> · <code>lcd</code> · <code>lpwd</code></td><td>The same <b>on your laptop</b> (l = local)</td></tr>
+        <tr><td><code>mkdir name</code></td><td>Make a folder on the HPC</td></tr>
+        <tr><td><code>exit</code></td><td>Quit sftp</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="pager"><a href="login.html">← Log in</a><a href="../gpus/index.html">Next topic: Find free GPUs →</a></div>
+  <footer class="site"><span>Made by CSIS research scholars, BITS Pilani Hyderabad, for a better understanding of Sharanga.</span><a href="https://sharanga.hpc.bits-hyderabad.ac.in/docs/faq/" target="_blank" rel="noopener">Official Sharanga documentation</a><a href="../privacy.html">Privacy</a></footer>
+</div>
+<script src="../assets/kit.js"></script>
+</body>
+</html>

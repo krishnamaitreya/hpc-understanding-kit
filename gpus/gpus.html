@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GPUs on Sharanga · HPC Understanding Kit</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.png" type="image/png" sizes="32x32">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  tr.csis td{background:var(--ok-soft)}
+  .pill{display:inline-block;font-size:13px;padding:0 6px;border:1px solid var(--ok);color:var(--ok);margin-left:6px}
+  td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">HPC Kit</a><span>›</span><a href="index.html">Find free GPUs</a><span>›</span><span>GPUs on Sharanga</span></nav>
+  <header>
+    <p class="eyebrow">Find free GPUs · 1 of 3</p>
+    <h1>GPUs on Sharanga</h1>
+  </header>
+  <p class="lead">Each row is a partition. You write its name in your job script to choose that GPU.</p>
+
+  <div class="card tscroll">
+    <table>
+      <thead><tr><th>Partition</th><th>GPU</th><th>GPUs</th><th>Max job time</th><th>You can use at once</th></tr></thead>
+      <tbody>
+        <tr class="csis"><td><code>gpu_rtx_pro_6000_6_csis_hyd</code><span class="pill">CSIS</span></td><td>RTX Pro 6000 · 96 GB</td><td class="n">6</td><td class="n">2 days</td><td>3 GPUs</td></tr>
+        <tr><td><code>gpu_h200_8</code></td><td>H200 · 141 GB</td><td class="n">8</td><td class="n">1 day</td><td>2 GPUs, 2 running jobs</td></tr>
+        <tr><td><code>gpu_h100_4</code></td><td>H100 · 80 GB</td><td class="n">8 (2 nodes × 4)</td><td class="n">3 days</td><td>1 GPU, 2 running jobs</td></tr>
+        <tr><td><code>gpu_a100_8</code></td><td>A100 · 80 GB</td><td class="n">8</td><td class="n">5 days</td><td>2 GPUs, 2 running jobs</td></tr>
+        <tr><td><code>gpu_v100_2</code></td><td>V100 · 32 GB</td><td class="n">4 (2 nodes × 2)</td><td class="n">3 days</td><td>4 GPUs (2 per job)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">Limits are per <b>account</b>. If several students share one guide's account, they share these limits too.</div>
+
+  <div class="card">
+    <h2>Which one should I pick?</h2>
+    <ul class="do" style="margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px">
+      <li><b>Long training (more than 1 day):</b> A100 (up to 5 days) or H100 (up to 3 days).</li>
+      <li><b>Short runs, tests, evaluation:</b> H200 (up to 1 day).</li>
+      <li><b>CSIS students:</b> the CSIS partition (up to 2 days, 3 GPUs), if your guide's account is enabled for it. See <a href="csis.html">The CSIS node</a>.</li>
+      <li><b>Small models:</b> V100, which is often less busy.</li>
+    </ul>
+  </div>
+
+  <p style="font-size:13px;color:var(--muted)">Checked on the cluster on 30 Sep 2026. Limits can change. Check the current time limit with <code>sinfo -p &lt;partition&gt;</code> (TIMELIMIT column).</p>
+
+  <div class="pager"><a href="index.html">← Find free GPUs</a><a href="free.html">Check which are free →</a></div>
+  <footer class="site"><span>Made by CSIS research scholars, BITS Pilani Hyderabad, for a better understanding of Sharanga.</span><a href="https://sharanga.hpc.bits-hyderabad.ac.in/docs/faq/" target="_blank" rel="noopener">Official Sharanga documentation</a><a href="../privacy.html">Privacy</a></footer>
+</div>
+</body>
+</html>

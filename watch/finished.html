@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Finished or failed? · HPC Understanding Kit</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.png" type="image/png" sizes="32x32">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">HPC Kit</a><span>›</span><a href="index.html">Watch &amp; fix jobs</a><span>›</span><span>Finished or failed?</span></nav>
+  <header>
+    <p class="eyebrow">Watch &amp; fix jobs · 3 of 3</p>
+    <h1>Finished or failed?</h1>
+  </header>
+  <p class="lead">Once a job leaves <code>squeue</code>, <code>sacct</code> tells you how it ended. The <code>.err</code> file tells you why.</p>
+
+  <div class="card">
+    <h2>1 · How did it end?</h2>
+    <div class="codebox"><pre>sacct -X -S 2026-09-01 -o JobID,JobName%15,Partition,State,Elapsed</pre></div>
+    <p style="font-size:14px;color:var(--muted)"><code>-S</code> = show jobs since this date. Change it to a recent date.</p>
+    <div class="term"><div class="bar">HPC · real states and times (job names simplified)</div><pre>JobID                JobName  Partition      State    Elapsed
+346889            train_bdd gpu_a100_8    <span class="d">TIMEOUT</span> 5-00:00:02
+350113          train_hint gpu_a100_8  <span class="g">COMPLETED</span> 2-23:54:00
+353704           test_eval gpu_h200_8  <span class="g">COMPLETED</span>   00:20:15
+357864        o365_downl+    compute  CANCELLED   00:10:32</pre></div>
+    <div class="tscroll"><table>
+      <thead><tr><th>State</th><th>Meaning</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><td><code>COMPLETED</code></td><td>Finished without errors</td><td>Collect your results</td></tr>
+        <tr><td><code>FAILED</code></td><td>Your program stopped with an error</td><td>Read the <code>.err</code> file</td></tr>
+        <tr><td><code>TIMEOUT</code></td><td>Ran out of <code>--time</code> and was stopped</td><td>Ask for more time, or save checkpoints and resume in a new job</td></tr>
+        <tr><td><code>OUT_OF_MEMORY</code></td><td>Used more RAM than <code>--mem</code></td><td>Raise <code>--mem</code>, or lower batch size or dataloader workers</td></tr>
+        <tr><td><code>CANCELLED</code></td><td>Cancelled by someone on your account, or an admin</td><td>Resubmit if needed</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h2>2 · Common errors in the .err file</h2>
+    <div class="tscroll"><table>
+      <thead><tr><th>Error says</th><th>Why</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr><td><code>CUDA out of memory</code></td><td>Model or batch too big for the GPU's memory</td><td>Smaller batch size, mixed precision, or a GPU with more memory</td></tr>
+        <tr><td><code>ModuleNotFoundError</code></td><td>Package missing, or the wrong conda environment</td><td>Check the <code>conda activate</code> line; install the package in that environment</td></tr>
+        <tr><td><code>conda: command not found</code></td><td>Conda not loaded in the job</td><td>Keep <code>source ~/.bashrc</code> before <code>conda activate</code></td></tr>
+        <tr><td><code>torch.cuda.is_available()</code> is <code>False</code></td><td>No GPU was requested</td><td>Add <code>#SBATCH --gres=gpu:1</code></td></tr>
+        <tr><td><code>No such file or directory</code></td><td>Wrong path</td><td>Use full paths, and check the <code>cd</code> line</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h2>3 · Ask only for what you need</h2>
+    <p>Every GPU, core and GB you request is blocked for other users while your job runs, even if your job never uses it. When everyone asks only for what they need, more jobs fit on the cluster and everyone gets GPUs sooner, including you.</p>
+    <p>After a job finishes, <code>seff</code> shows how much it really used:</p>
+    <div class="codebox"><pre>seff 350113</pre></div>
+    <div class="term"><div class="bar">HPC · real output</div><pre>Job ID: 350113
+State: COMPLETED (exit code 0)
+Cores per node: 8
+CPU Efficiency: 54.79% of 23-23:12:00 core-walltime
+Job Wall-clock time: 2-23:54:00
+Memory Utilized: 37.85 GB
+<span class="g">Memory Efficiency: 31.54% of 120.00 GB</span></pre></div>
+    <p>This job asked for 120 GB but used only 38 GB. For the next run, about <b>50 GB</b> is enough: a little more than it used, not more than twice.</p>
+    <ul style="margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px">
+      <li><b>Memory:</b> set <code>--mem</code> a little above <code>Memory Utilized</code>.</li>
+      <li><b>Cores:</b> if <code>CPU Efficiency</code> is low, lower <code>--cpus-per-task</code>.</li>
+      <li><b>Time:</b> set <code>--time</code> a little above the real run time. Shorter jobs also start sooner.</li>
+      <li><b>GPUs:</b> ask for more than one GPU only if your code really uses them all.</li>
+    </ul>
+  </div>
+
+  <div class="pager"><a href="waiting.html">← Why is my job waiting?</a><a href="../index.html">HPC Kit home →</a></div>
+  <footer class="site"><span>Made by CSIS research scholars, BITS Pilani Hyderabad, for a better understanding of Sharanga.</span><a href="https://sharanga.hpc.bits-hyderabad.ac.in/docs/faq/" target="_blank" rel="noopener">Official Sharanga documentation</a><a href="../privacy.html">Privacy</a></footer>
+</div>
+<script src="../assets/kit.js"></script>
+</body>
+</html>

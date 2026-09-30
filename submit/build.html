@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Build your job script · HPC Understanding Kit</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.png" type="image/png" sizes="32x32">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  .form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+  .form label{display:flex;flex-direction:column;gap:4px;font:700 15px var(--body);color:var(--fg);min-width:0}
+  .form input,.form select{font:15px var(--body);padding:8px 10px;border-radius:2px;border:1px solid var(--line);background:var(--bg);color:var(--fg);min-width:0;width:100%}
+  .form input:focus-visible,.form select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  .form .wide{grid-column:1/-1}
+  .form [hidden]{display:none!important}
+  .checks{display:flex;flex-direction:column;gap:8px}
+  .hint{font:400 13px var(--body);color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">HPC Kit</a><span>›</span><a href="index.html">Submit a job</a><span>›</span><span>Build your job script</span></nav>
+  <header>
+    <p class="eyebrow">Submit a job · 1 of 2</p>
+    <h1>Build your job script</h1>
+  </header>
+  <p class="lead">Choose GPU or CPU, fill in the form, and copy the script. It checks your choices against Sharanga's limits as you type.</p>
+
+  <div class="tabs" id="kind" role="tablist" aria-label="Job type">
+    <button type="button" role="tab" data-kind="gpu" aria-selected="true">GPU job</button>
+    <button type="button" role="tab" data-kind="cpu" aria-selected="false">CPU job</button>
+  </div>
+
+  <div class="card">
+    <div class="form" id="form">
+      <label class="wide">Partition<select id="f_part"></select></label>
+      <label id="gpuField">GPUs<input id="f_gpu" type="number" min="1" max="8" value="1"></label>
+      <label>CPU cores<input id="f_cpu" type="number" min="1" max="192" value="8"></label>
+      <label>Memory (GB)<input id="f_mem" type="number" min="1" max="1000" value="64"></label>
+      <label>Time (hours)<input id="f_time" type="number" min="1" max="200" value="24"><span class="hint" id="maxHint"></span></label>
+      <label>Job name<input id="f_name" type="text" value="my_job"></label>
+      <label>Conda environment<input id="f_env" type="text" value="myenv"></label>
+      <label class="wide">Project folder on the HPC<input id="f_dir" type="text" value="/scratch/$USER/myproject"></label>
+      <label class="wide">Command to run<input id="f_cmd" type="text" value="python train.py"></label>
+    </div>
+  </div>
+
+  <div class="checks" id="checks" aria-live="polite"></div>
+
+  <div class="card">
+    <h2>Your script</h2>
+    <p>Save it as <code>job.sh</code> in your project folder on the HPC.</p>
+    <div class="codebox"><pre id="script"></pre></div>
+  </div>
+
+  <div class="card">
+    <h2>Two lines you must never skip</h2>
+    <ul style="margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px">
+      <li><b><code>--time</code>:</b> without it, Sharanga stops your job after <b>30 minutes</b>.</li>
+      <li><b><code>--mem</code>:</b> without it, a CPU job takes the <b>whole node's memory</b> and blocks everyone else on that node.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>What each line means</h2>
+    <div class="tscroll"><table>
+      <thead><tr><th>Line</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><code>#!/bin/bash</code></td><td>Run the script with bash. Always the first line.</td></tr>
+        <tr><td><code>--job-name</code></td><td>A name for your job. Shown in <code>squeue</code> and used in log file names.</td></tr>
+        <tr><td><code>--partition</code></td><td>Which group of nodes to run on (see Find free GPUs / CPU nodes).</td></tr>
+        <tr><td><code>--nodes=1</code>, <code>--ntasks=1</code></td><td>One node, one program. Keep these as they are.</td></tr>
+        <tr><td><code>--cpus-per-task</code></td><td>CPU cores. For training, match your dataloader workers.</td></tr>
+        <tr><td><code>--gres=gpu:1</code></td><td>Number of GPUs. GPU jobs only.</td></tr>
+        <tr><td><code>--mem</code></td><td>Memory (RAM) for the job.</td></tr>
+        <tr><td><code>--time</code></td><td>Maximum run time as <code>days-hours:minutes:seconds</code>. The job is stopped when it runs out.</td></tr>
+        <tr><td><code>--output</code></td><td>File that collects everything your program prints. <code>%x</code> = job name, <code>%j</code> = job ID.</td></tr>
+        <tr><td><code>--error</code></td><td>File that collects errors and warnings.</td></tr>
+        <tr><td><code>source ~/.bashrc</code><br><code>conda activate</code></td><td>Load conda and switch to your environment.</td></tr>
+        <tr><td><code>cd</code></td><td>Go to your project folder.</td></tr>
+        <tr><td>last line</td><td>The command that does the work.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="pager"><a href="index.html">← Submit a job</a><a href="run.html">Submit it and read the output →</a></div>
+  <footer class="site"><span>Made by CSIS research scholars, BITS Pilani Hyderabad, for a better understanding of Sharanga.</span><a href="https://sharanga.hpc.bits-hyderabad.ac.in/docs/faq/" target="_blank" rel="noopener">Official Sharanga documentation</a><a href="../privacy.html">Privacy</a></footer>
+</div>
+<script src="../assets/kit.js"></script>
+<script>
+// Limits read from the cluster on 30 Sep 2026 (partition MaxTime, node size, QOS per-job and per-account caps).
+// Values are what ONE job may ask for; asking for more (or fewer than minC) means the job never starts.
+const P = {
+  gpu: [
+    {id:"gpu_h100_4",  label:"H100 (80 GB)",  h:72,  maxG:1, minC:1, maxC:12, maxM:300},
+    {id:"gpu_h200_8",  label:"H200 (141 GB)", h:24,  maxG:2, minC:1, maxC:12, maxM:300},
+    {id:"gpu_a100_8",  label:"A100 (80 GB)",  h:120, maxG:2, minC:1, maxC:16, maxM:400},
+    {id:"gpu_rtx_pro_6000_6_csis_hyd", label:"CSIS · RTX Pro 6000 (96 GB)", h:48, maxG:3, minC:1, maxC:24, maxM:300},
+    {id:"gpu_v100_2",  label:"V100 (32 GB)",  h:72,  maxG:2, minC:1, maxC:64, maxM:250},
+  ],
+  cpu: [
+    {id:"compute", label:"4 to 64 cores", h:96, minC:4, maxC:64, maxM:250},
+    {id:"big_compute", label:"128 to 192 cores", h:120, minC:128, maxC:192, maxM:375},
+    {id:"big_compute_amd_9655", label:"128 to 192 cores", h:120, minC:128, maxC:192, maxM:375},
+  ]
+};
+const $ = id => document.getElementById(id);
+let kind = "gpu";
+const days = h => h % 24 === 0 ? `${h/24} day${h/24>1?"s":""}` : `${h} hours`;
+
+function fillPartitions(){
+  $("f_part").innerHTML = P[kind].map(p => `<option value="${p.id}">${p.id}  ·  ${p.label}</option>`).join("");
+  $("gpuField").hidden = kind !== "gpu";
+  if (kind === "cpu" && +$("f_cpu").value === 8) $("f_cpu").value = 16;
+  if (kind === "gpu" && +$("f_cpu").value === 16) $("f_cpu").value = 8;
+  if (kind === "cpu" && +$("f_mem").value === 64) $("f_mem").value = 32;
+  if (kind === "gpu" && +$("f_mem").value === 32) $("f_mem").value = 64;
+}
+
+function build(){
+  const p = P[kind].find(x => x.id === $("f_part").value);
+  const g = Math.max(1, +$("f_gpu").value || 1), c = Math.max(1, +$("f_cpu").value || 1);
+  const m = Math.max(1, +$("f_mem").value || 1), h = Math.max(1, Math.round(+$("f_time").value || 1));
+  const name = ($("f_name").value.trim() || "my_job").replace(/\s+/g, "_");
+  const env = $("f_env").value.trim() || "myenv";
+  const dir = $("f_dir").value.trim() || "/scratch/$USER/myproject";
+  const cmd = $("f_cmd").value.trim() || "python train.py";
+  const t = `${Math.floor(h/24)}-${String(h%24).padStart(2,"0")}:00:00`;
+  $("maxHint").textContent = `Max ${days(p.h)} on this partition`;
+
+  const lines = [
+    "#!/bin/bash",
+    `#SBATCH --job-name=${name}`,
+    `#SBATCH --partition=${p.id}`,
+    "#SBATCH --nodes=1",
+    "#SBATCH --ntasks=1",
+    `#SBATCH --cpus-per-task=${c}`,
+    ...(kind === "gpu" ? [`#SBATCH --gres=gpu:${g}`] : []),
+    `#SBATCH --mem=${m}G`,
+    `#SBATCH --time=${t}`,
+    "#SBATCH --output=%x_%j.out",
+    "#SBATCH --error=%x_%j.err",
+    "",
+    "source ~/.bashrc",
+    `conda activate ${env}`,
+    `cd ${dir}`,
+    "",
+    ...(kind === "gpu" ? ["nvidia-smi"] : []),
+    cmd
+  ];
+  $("script").textContent = lines.join("\n");
+
+  const out = [];
+  const never = msg => out.push(["bad", `<b>Will never start.</b> ${msg}`]);
+  if (h > p.h) never(`${h} hours is more than this partition's ${days(p.h)} limit.`);
+  if (kind === "gpu" && g > p.maxG) never(`One job here can use at most ${p.maxG} GPU${p.maxG>1?"s":""}.`);
+  if (c < p.minC) never(`A job here must ask for at least ${p.minC} cores. For fewer cores, use <code>compute</code>.`);
+  if (c > p.maxC) never(`One job here can use at most ${p.maxC} cores.`);
+  if (m > p.maxM) never(`One job here can use at most ${p.maxM} GB of memory.`);
+  if (!out.length) out.push(["ok", `Looks good for <code>${p.id}</code>. Limits for one job: ${days(p.h)}${kind==="gpu" ? `, ${p.maxG} GPU${p.maxG>1?"s":""}` : ""}, ${p.minC>1 ? `${p.minC} to ` : "up to "}${p.maxC} cores, ${p.maxM} GB.`]);
+  if (p.id.includes("csis")) out.push(["warn", `Only accounts enabled for the CSIS node can use this partition. Otherwise sbatch says <code>Invalid qos specification</code>. See <a href="../gpus/csis.html">The CSIS node</a>.`]);
+  $("checks").innerHTML = out.map(([k, t]) => `<div class="note ${k}">${t}</div>`).join("");
+}
+
+$("kind").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  kind = b.dataset.kind;
+  $("kind").querySelectorAll("button").forEach(x => x.setAttribute("aria-selected", x === b));
+  fillPartitions(); build();
+});
+$("form").addEventListener("input", build);
+$("form").addEventListener("change", build);
+fillPartitions(); build();
+</script>
+</body>
+</html>

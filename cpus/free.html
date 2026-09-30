@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Check free CPUs · HPC Understanding Kit</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.png" type="image/png" sizes="32x32">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">HPC Kit</a><span>›</span><a href="index.html">Find free CPU nodes</a><span>›</span><span>Check which are free</span></nav>
+  <header>
+    <p class="eyebrow">Find free CPU nodes · 2 of 2</p>
+    <h1>Check which CPUs are free</h1>
+  </header>
+  <p class="lead">Run these on the HPC after you log in.</p>
+
+  <div class="card">
+    <h2>1 · sinfo: free cores per partition</h2>
+    <div class="codebox"><pre>sinfo -p compute,big_compute,big_compute_amd_9655 -o "%P %l %D %C"</pre></div>
+    <div class="term"><div class="bar">HPC · real output, 30 Sep 2026</div><pre>PARTITION TIMELIMIT NODES CPUS(A/I/O/T)
+compute infinite 22 924/<span class="g">484</span>/0/1408
+big_compute* 5-00:00:00 19 1920/<span class="g">1536</span>/192/3648
+big_compute_amd_9655 5-00:00:00 5 960/<span class="g">0</span>/0/960</pre></div>
+    <p><code>CPUS(A/I/O/T)</code> means <b>A</b>llocated / <b>I</b>dle / <b>O</b>ther (down) / <b>T</b>otal. The second number is the free cores.</p>
+    <p style="font-size:14px;color:var(--muted)"><code>compute</code> shows TIMELIMIT <code>infinite</code>, but your jobs there are still capped at 4 days.</p>
+  </div>
+
+  <div class="card">
+    <h2>2 · cpufree: free cores and idle nodes</h2>
+    <p><b>One-time setup.</b> Paste this once on the HPC.</p>
+    <div class="codebox"><pre>cat &gt;&gt; ~/.bashrc &lt;&lt;'EOF'
+cpufree(){ for p in compute big_compute big_compute_amd_9655; do c=$(sinfo -h -p $p -o "%C"); i=$(sinfo -h -p $p -t idle -o "%D"); echo "$c" | awk -F/ -v p=$p -v i=${i:-0} '{printf "%-22s free %5d of %5d cores   %2d whole nodes idle\n", p, $2, $4, i}'; done; }
+EOF
+source ~/.bashrc</pre></div>
+    <p><b>Then, any time:</b></p>
+    <div class="codebox"><pre>cpufree</pre></div>
+    <div class="term"><div class="bar">HPC · real output, 30 Sep 2026</div><pre><span class="p">[&lt;username&gt;@hpc01 ~]$</span> <span class="c">cpufree</span>
+compute                free   484 of  1408 cores    0 whole nodes idle
+big_compute            <span class="g">free  1536 of  3648 cores    7 whole nodes idle</span>
+big_compute_amd_9655   free     0 of   960 cores    0 whole nodes idle</pre></div>
+  </div>
+
+  <div class="card">
+    <h2>Per node</h2>
+    <p>To see each node in a partition, with free cores and free memory (MB):</p>
+    <div class="codebox"><pre>sinfo -N -p big_compute -o "%N %t %C %e"</pre></div>
+  </div>
+
+  <div class="pager"><a href="cpus.html">← CPU nodes on Sharanga</a><a href="../submit/index.html">Next topic: Submit a job →</a></div>
+  <footer class="site"><span>Made by CSIS research scholars, BITS Pilani Hyderabad, for a better understanding of Sharanga.</span><a href="https://sharanga.hpc.bits-hyderabad.ac.in/docs/faq/" target="_blank" rel="noopener">Official Sharanga documentation</a><a href="../privacy.html">Privacy</a></footer>
+</div>
+<script src="../assets/kit.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CSIS node · HPC Understanding Kit</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.png" type="image/png" sizes="32x32">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">HPC Kit</a><span>›</span><a href="index.html">Find free GPUs</a><span>›</span><span>The CSIS node</span></nav>
+  <header>
+    <p class="eyebrow">Find free GPUs · 3 of 3</p>
+    <h1>The CSIS node</h1>
+  </header>
+  <p class="lead">CSIS has its own GPU node, <code>gpunode8</code>, with 6 NVIDIA RTX Pro 6000 GPUs (96 GB each). You reach it through one partition name, if your account is enabled for it.</p>
+
+  <div class="card">
+    <table>
+      <tbody>
+        <tr><th>Node</th><td><code>gpunode8</code></td></tr>
+        <tr><th>GPUs</th><td>6 × RTX Pro 6000 Blackwell, 96 GB each</td></tr>
+        <tr><th>CPU / RAM</th><td>64 cores, 1 TB</td></tr>
+        <tr><th>Partition</th><td><code>gpu_rtx_pro_6000_6_csis_hyd</code></td></tr>
+        <tr><th>Max job time</th><td>2 days</td></tr>
+        <tr><th>You can use at once</th><td>3 GPUs, 24 CPU cores, 300 GB RAM</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn"><b>Your account must be enabled for this node.</b> Only accounts the HPC team has enabled can use it. If <code>sbatch</code> says <code>Invalid qos specification</code>, your guide's account is not enabled. Ask your guide to request it from hpc@hyderabad.bits-pilani.ac.in.</div>
+
+  <div class="card">
+    <h2>Is a GPU free on it?</h2>
+    <div class="codebox"><pre>gpufree | grep csis</pre></div>
+    <p>Who is using it right now:</p>
+    <div class="codebox"><pre>squeue -p gpu_rtx_pro_6000_6_csis_hyd</pre></div>
+  </div>
+
+  <div class="card">
+    <h2>Use it in a job</h2>
+    <p>Put this line in your job script. The Submit a job topic shows the full script.</p>
+    <div class="codebox"><pre>#SBATCH --partition=gpu_rtx_pro_6000_6_csis_hyd</pre></div>
+  </div>
+
+  <div class="pager"><a href="free.html">← Check which are free</a><a href="../cpus/index.html">Next topic: Find free CPU nodes →</a></div>
+  <footer class="site"><span>Made by CSIS research scholars, BITS Pilani Hyderabad, for a better understanding of Sharanga.</span><a href="https://sharanga.hpc.bits-hyderabad.ac.in/docs/faq/" target="_blank" rel="noopener">Official Sharanga documentation</a><a href="../privacy.html">Privacy</a></footer>
+</div>
+<script src="../assets/kit.js"></script>
+</body>
+</html>
